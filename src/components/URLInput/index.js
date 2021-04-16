@@ -11,7 +11,6 @@ const URLInput = ({ getWebPage }) => {
 
     const useStyles = makeStyles((theme) => ({
         root: {
-            padding: '2px 4px',
             display: 'flex',
             alignItems: 'center',
             width: "100%",

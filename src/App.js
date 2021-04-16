@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import axios from "./axiosInstance";
 import './App.css';
 import URLInput from "./components/URLInput"
+import Screenshot from "./components/Screenshot";
 
 function App() {
 
@@ -21,7 +22,6 @@ function App() {
     return (
         <Grid
             container
-            spacing={1}
             style={{height: "100vh"}}
         >
 
@@ -41,9 +41,7 @@ function App() {
                     </div>
                 </Grid>
                 <Grid item xs={6} >
-                    <div>
-                        col2
-                    </div>
+                    <Screenshot screenshot={state ? state.screenshot: null} />
                 </Grid>
             </Grid>
 
