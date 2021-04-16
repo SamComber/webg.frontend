@@ -5,7 +5,7 @@
     import IconButton from '@material-ui/core/IconButton';
     import SearchIcon from '@material-ui/icons/Search';
 
-const URLInput = () => {
+const URLInput = ({ onClick }) => {
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -34,7 +34,7 @@ const URLInput = () => {
                 inputProps={{'aria-label': 'enter url'}}
             />
             <IconButton type="submit" className={classes.iconButton} aria-label="search">
-                <SearchIcon/>
+                <SearchIcon onClick={onClick}/>
             </IconButton>
         </Paper>
     );

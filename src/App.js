@@ -1,9 +1,19 @@
 import Grid from "@material-ui/core/Grid";
+import React, { useState } from "react";
 
 import './App.css';
 import URLInput from "./components/URLInput"
 
 function App() {
+
+    const [state, setState] = useState();
+
+    const getWebPage = () => {
+        // call the api
+        // setState(data)
+        alert('api was called!');
+    }
+
     return (
         <Grid
             container
@@ -15,7 +25,7 @@ function App() {
         >
 
             <Grid item xs={12} style={{height: "5vh"}}>
-                <URLInput/>
+                <URLInput onClick={getWebPage}/>
             </Grid>
 
             <Grid
