@@ -1,11 +1,13 @@
-    import React from 'react';
+    import React, { useRef } from 'react';
     import {makeStyles} from '@material-ui/core/styles';
     import Paper from '@material-ui/core/Paper';
     import InputBase from '@material-ui/core/InputBase';
     import IconButton from '@material-ui/core/IconButton';
     import SearchIcon from '@material-ui/icons/Search';
 
-const URLInput = ({ onClick }) => {
+const URLInput = ({ getWebPage }) => {
+
+    const inputElement = useRef(null);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -27,14 +29,15 @@ const URLInput = ({ onClick }) => {
     const classes = useStyles();
 
     return (
-        <Paper component="form" className={classes.root}>
+        <Paper className={classes.root}>
             <InputBase
                 className={classes.input}
                 placeholder="Enter URL"
                 inputProps={{'aria-label': 'enter url'}}
+                inputRef={inputElement}
             />
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-                <SearchIcon onClick={onClick}/>
+            <IconButton className={classes.iconButton} aria-label="search" onClick={() => getWebPage(inputElement.current.value)}>
+                <SearchIcon/>
             </IconButton>
         </Paper>
     );
