@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import Grid from "@material-ui/core/Grid";
+
 import './App.css';
+import URLInput from "./components/URLInput"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    return (
+        <Grid
+            container
+            // direction="row"
+            // justify="space-evenly"
+            // alignItems="stretch"
+            spacing={1}
+            style={{height: "100vh"}}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+            <Grid item xs={12} style={{height: "5vh"}}>
+                <URLInput/>
+            </Grid>
+
+            <Grid
+                container
+                item
+                xs={12}
+                style={{height: "95vh"}}>
+
+                <Grid item xs={6}>
+                    <div>
+                        col1
+                    </div>
+                </Grid>
+                <Grid item xs={6} >
+                    <div>
+                        col2
+                    </div>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    );
 }
 
 export default App;
