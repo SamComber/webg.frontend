@@ -10,10 +10,11 @@ import Screenshot from "./components/Screenshot";
 function App() {
 
     const [webPage, setWebPage] = useState();
-    const [nodeInFocus, setNodeInFocus] = useState(0);
+    const [nodeInFocus, setNodeInFocus] = useState();
 
 
     const getWebPage = (url) => {
+        // Fetches web page data from backend API
         setWebPage(undefined);
         axios.get("webPage", {params: {url}})
             .then((response) => {
@@ -23,12 +24,13 @@ function App() {
     }
 
     const handleScreenshotClick = (e) => {
-        // Calculates coordinates of click on screenshot scaled up to the original screenshot dimensions
+        // Handles clicks on screenshot
         let screenshotRect = e.currentTarget.getBoundingClientRect();
+        // scale up event click coordinates to match original size of screenshot
         const clickX = (e.pageX - screenshotRect.left) * (webPage.viewportWidth / screenshotRect.width);
         const clickY = (e.pageY - screenshotRect.top) * (webPage.viewportHeight / screenshotRect.height);
-        console.log(clickX, clickY);
         if (webPage){
+            // find visible node at point that was clicked
             const nodesAtPoint = webPage.graph.nodes.filter(
                 node => {
                     return node.isVisible
@@ -38,16 +40,17 @@ function App() {
                         && (clickY < node.coordinates.bottom)
                 }
             )
-           console.log(`Found ${nodesAtPoint.length} visible nodes at clicked point:`);
-           console.log(nodesAtPoint);
+           const nodeAtPoint = nodesAtPoint.pop();
+           setNodeInFocus(nodeAtPoint);
         }
     }
 
     const handleNodeSelection = (e) => {
+        // Handles selection of new node on vis.js graph
         const  { nodes } = e;
         const nodeId = nodes[0];
         const node = webPage.graph.nodes[nodeId];
-        console.log(node);
+        setNodeInFocus(node);
     }
 
     return (
@@ -77,7 +80,7 @@ function App() {
                 <Grid item xs={6}>
                     {
                         webPage
-                            ? <Screenshot screenshot={webPage.screenshot} handleScreenshotClick={handleScreenshotClick}/>
+                            ? <Screenshot webPage={webPage} handleScreenshotClick={handleScreenshotClick} nodeInFocus={nodeInFocus}/>
                             : null
                     }
                 </Grid>
