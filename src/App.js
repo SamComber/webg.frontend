@@ -1,4 +1,5 @@
 import Grid from "@material-ui/core/Grid";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import React, {useState} from "react";
 
 import axios from "./axiosInstance";
@@ -33,7 +34,7 @@ function App() {
             // find visible node at point that was clicked
             const nodesAtPoint = webPage.graph.nodes.filter(
                 node => {
-                    return node.isVisible
+                    return (node.isVisible)
                         && (node.coordinates.left < clickX)
                         && (clickX < node.coordinates.right)
                         && (node.coordinates.top < clickY)
@@ -63,28 +64,33 @@ function App() {
                 <URLInput getWebPage={getWebPage}/>
             </Grid>
 
-            <Grid
-                container
-                item
-                xs={12}
-                style={{height: "95vh"}}>
+            {
+                webPage
+                    ? (
+                        <Grid
+                            container
+                            item
+                            xs={12}
+                            style={{height: "95vh"}}>
+                            <Grid item xs={6}>
+                                <Graph graph={webPage.graph}
+                                       handleNodeSelection={handleNodeSelection}
+                                       nodeInFocus={nodeInFocus}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Screenshot webPage={webPage}
+                                            handleScreenshotClick={handleScreenshotClick}
+                                            nodeInFocus={nodeInFocus}/>
+                            </Grid>
+                        </Grid>
+                    )
+                    : (
+                        <Grid>
+                            <CircularProgress/>
+                        </Grid>
+                    )
+            }
 
-                <Grid item xs={6}>
-                    {
-                        webPage
-                            ? <Graph graph={webPage.graph} handleNodeSelection={handleNodeSelection}/>
-                            : null
-                    }
-
-                </Grid>
-                <Grid item xs={6}>
-                    {
-                        webPage
-                            ? <Screenshot webPage={webPage} handleScreenshotClick={handleScreenshotClick} nodeInFocus={nodeInFocus}/>
-                            : null
-                    }
-                </Grid>
-            </Grid>
 
         </Grid>
     );
