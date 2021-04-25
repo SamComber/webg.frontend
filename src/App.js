@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import axios from "./axiosInstance";
-import './App.css';
 import URLInput from "./components/URLInput"
 import Graph from "./components/Graph";
 import Screenshot from "./components/Screenshot";
