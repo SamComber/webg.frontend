@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 
+import styles from "./screenshot.module.css"
+
 const Screenshot = ({ webPage, handleScreenshotClick, nodeInFocus }) => {
 
     const src = "data:image/png;base64," + webPage.screenshot;
@@ -32,9 +34,9 @@ const Screenshot = ({ webPage, handleScreenshotClick, nodeInFocus }) => {
     }, [webPage, nodeInFocus])
 
     return (
-        <div style={{overflowY: "auto", height: "95vh", position: "relative"}}>
-            <img ref={screenshotRef} src={src} alt="screenshot" style={{position: "absolute", zIndex: 1, width: "100%", pointerEvents: "all"}} onClick={handleScreenshotClick}/>
-            <canvas ref={canvasRef} width={100} height={100} style={{position: "relative", zIndex: 20, pointerEvents: "none"}}/>
+        <div className={styles.screenshotDiv}>
+            <img ref={screenshotRef} src={src} alt="screenshot" className={styles.screenshotImg} onClick={handleScreenshotClick}/>
+            <canvas ref={canvasRef} width={100} height={100} className={styles.screenshotCanvas}/>
         </div>
     )
 }
