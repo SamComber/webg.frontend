@@ -25,6 +25,7 @@ const Screenshot = ({ webPage, handleScreenshotClick, nodeInFocus }) => {
             const y = coordinates.top * (screenshotElement.height / webPage.viewportHeight);
             const height = coordinates.height * (screenshotElement.height / webPage.viewportHeight);
 
+            // Draw bounding box of node on canvas
             context.fillStyle = "rgba(255, 165, 0, 0.5)"
             context.fillRect(x, y, width, height)
         }

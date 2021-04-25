@@ -1,6 +1,6 @@
+import React, {useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import React, {useEffect, useState} from "react";
 
 import axios from "./axiosInstance";
 import './App.css';
@@ -13,25 +13,26 @@ import getNewNode from "./utils/graph/traversal"
 function App() {
 
     const [webPage, setWebPage] = useState();
-    const [network, setNetwork] = useState();
     const [nodeInFocus, setNodeInFocus] = useState();
+    const [network, setNetwork] = useState();  // vis.js Network object
     const [loading, setLoading] = useState(false);
 
     const getWebPage = (url) => {
         // Fetches web page data from backend API
         setLoading(true);
         setWebPage(undefined);
+        setNodeInFocus(undefined);
+        setNetwork(undefined);
         axios.get("webPage", {params: {url}})
             .then((response) => {
                 setWebPage(response.data);
-                setNodeInFocus(undefined);
             })
             .catch(error => alert(error.message))
             .finally(() => setLoading(false))
     }
 
     const handleScreenshotClick = (e) => {
-        // Handles clicks on screenshot
+        // Handles selection of new node via click on screenshot
         let screenshotRect = e.currentTarget.getBoundingClientRect();
         // scale up event click coordinates to match original size of screenshot
         const clickX = (e.pageX - screenshotRect.left) * (webPage.viewportWidth / screenshotRect.width);
@@ -50,21 +51,21 @@ function App() {
             const nodeAtPoint = nodesAtPoint.pop();
             setNodeInFocus(nodeAtPoint);
             network.selectNodes([nodeAtPoint.id]);
-            console.log(network.getScale());
             const scale = network.getScale() < 0.25 ? 1 : network.getScale();  // zoom in only if user is very zoomed out
-            network.focus(nodeAtPoint.id, {scale: scale});
+            network.focus(nodeAtPoint.id, { scale });
         }
     }
 
     const handleNodeSelection = (e) => {
         // Handles selection of new node on vis.js graph
-        const {nodes} = e;
+        const { nodes } = e;
         const nodeId = nodes[0];
         const node = webPage.graph.nodes[nodeId];
         setNodeInFocus(node);
     }
 
     useKeyPress(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"], (key) => {
+        // Traverse graph with arrow keys
         if (network && nodeInFocus) {
             const newNode = getNewNode(key, nodeInFocus, webPage.graph.nodes, network);
             if (newNode) {
@@ -81,6 +82,7 @@ function App() {
     }
 
     useEffect(() => {
+        // Prevent scrolling down on screenshot when arrow keys are used to traverse vis.js graph
         window.addEventListener('keydown', preventScrollOnArrowKey);
 
         return () => {

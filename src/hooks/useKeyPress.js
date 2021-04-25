@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 
 /**
  * useKeyPress
- * @param {Array.<string>} keys - the name of the key to respond to, compared against event.key
- * @param {function} action - the action to perform on key press
+ * @param {Array.<string>} keys - the keys to respond to.
+ * @param {function} handler - the function to call on key press.
  */
-export default function useKeypress(keys, action) {
+export default function useKeypress(keys, handler) {
   useEffect(() => {
     function onKeyup(e) {
-      if (keys.includes(e.key)) action(e.key)
+      if (keys.includes(e.key)) handler(e.key)
     }
     window.addEventListener('keyup', onKeyup);
     return () => window.removeEventListener('keyup', onKeyup);
-  }, [keys, action]);
+  }, [keys, handler]);
 }

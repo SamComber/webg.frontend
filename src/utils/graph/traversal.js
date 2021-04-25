@@ -2,6 +2,7 @@
 
 /**
  * getNewNode
+ * Returns new node given the current node and the arrow key that has been pressed.
  * @param {string} key - the name of the key to respond to, compared against event.key
  * @param {object} currentNode - current node in focus
  * @param {Array.object} nodes - all nodes
