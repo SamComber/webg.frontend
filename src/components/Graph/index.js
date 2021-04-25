@@ -2,15 +2,7 @@ import React, {useEffect, useState} from "react";
 
 import VisJSGraph from 'vis-react';
 
-const Graph = ({graph, handleNodeSelection, nodeInFocus}) => {
-
-    const [network, setNetwork] = useState();
-
-    useEffect(() => {
-        if (nodeInFocus && network) {
-            network.selectNodes([nodeInFocus.id]);
-        }
-    }, [nodeInFocus, network])
+const Graph = ({graph, handleNodeSelection, setNetwork}) => {
 
     const options = {
         layout: {

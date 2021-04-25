@@ -11,6 +11,7 @@ import Screenshot from "./components/Screenshot";
 function App() {
 
     const [webPage, setWebPage] = useState();
+    const [network, setNetwork] = useState();
     const [nodeInFocus, setNodeInFocus] = useState();
     const [loading, setLoading] = useState(false);
 
@@ -22,6 +23,7 @@ function App() {
         axios.get("webPage", {params: {url}})
             .then((response) => {
                 setWebPage(response.data);
+                setNodeInFocus(undefined);
             })
             .catch(error => alert(error.message))
             .finally(() => setLoading(false))
@@ -46,6 +48,8 @@ function App() {
             )
            const nodeAtPoint = nodesAtPoint.pop();
            setNodeInFocus(nodeAtPoint);
+           network.selectNodes([nodeAtPoint.id]);
+           network.focus(nodeAtPoint.id);
         }
     }
 
@@ -78,7 +82,7 @@ function App() {
                             <Grid item xs={6}>
                                 <Graph graph={webPage.graph}
                                        handleNodeSelection={handleNodeSelection}
-                                       nodeInFocus={nodeInFocus}/>
+                                       setNetwork={setNetwork}/>
                             </Grid>
                             <Grid item xs={6}>
                                 <Screenshot webPage={webPage}
