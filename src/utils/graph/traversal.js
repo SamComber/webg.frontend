@@ -1,5 +1,5 @@
 /**
- * getNewNode
+ * traverseToNewNode
  * Returns new node given the current node and the arrow key that has been pressed.
  * @param {string} key - the key that has been pressed
  * @param {object} currentNode - current node in focus
