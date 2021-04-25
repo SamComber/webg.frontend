@@ -1,6 +1,6 @@
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import axios from "./axiosInstance";
 import './App.css';
@@ -73,6 +73,20 @@ function App() {
             }
         }
     })
+
+    const preventScrollOnArrowKey = (e) => {
+        if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+            e.preventDefault();
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('keydown', preventScrollOnArrowKey);
+
+        return () => {
+            window.removeEventListener('keydown', preventScrollOnArrowKey);
+        };
+    }, []);
 
     return (
         <Grid
