@@ -7,6 +7,7 @@ import './App.css';
 import URLInput from "./components/URLInput"
 import Graph from "./components/Graph";
 import Screenshot from "./components/Screenshot";
+import useKeyPress from "./hooks/useKeyPress"
 
 function App() {
 
@@ -14,6 +15,75 @@ function App() {
     const [network, setNetwork] = useState();
     const [nodeInFocus, setNodeInFocus] = useState();
     const [loading, setLoading] = useState(false);
+
+    const getParentNode = (node) => {
+        const connectedNodeIds = network.getConnectedNodes(node.id);
+        if (connectedNodeIds.length >= 1) {
+            const parentNodeId = connectedNodeIds[0];
+            return webPage.graph.nodes[parentNodeId];
+        }
+        return null;
+    }
+
+    const getChildNodes = (node) => {
+        const connectedNodeIds = network.getConnectedNodes(node.id);
+        const childNodeIds = connectedNodeIds.slice(1, connectedNodeIds.length);
+        return childNodeIds.map(nodeId => webPage.graph.nodes[nodeId]);
+    }
+
+    useKeyPress("ArrowUp", () => {
+        if (network && nodeInFocus) {
+            const parentNode = getParentNode(nodeInFocus);
+            if (parentNode) {
+                setNodeInFocus(parentNode);
+                network.selectNodes([parentNode.id]);
+            }
+        }
+    })
+
+    useKeyPress("ArrowDown", () => {
+        if (network && nodeInFocus) {
+            const childNodes = getChildNodes(nodeInFocus);
+            if (childNodes.length > 0) {
+                setNodeInFocus(childNodes[0]);
+                network.selectNodes([childNodes[0].id]);
+
+            }
+        }
+    })
+
+    useKeyPress("ArrowLeft", () => {
+        if (network && nodeInFocus) {
+            const parentNode = getParentNode(nodeInFocus);
+            const siblingNodes = getChildNodes(parentNode);
+            const indexOfNodeInFocus = siblingNodes.indexOf(nodeInFocus);
+            let siblingNode;
+            if (indexOfNodeInFocus === 0) {
+                siblingNode = siblingNodes[siblingNodes.length - 1];
+            } else {
+                siblingNode = siblingNodes[indexOfNodeInFocus - 1];
+            }
+            setNodeInFocus(siblingNode);
+            network.selectNodes([siblingNode.id]);
+        }
+    })
+
+
+    useKeyPress("ArrowRight", () => {
+        if (network && nodeInFocus) {
+            const parentNode = getParentNode(nodeInFocus);
+            const siblingNodes = getChildNodes(parentNode);
+            const indexOfNodeInFocus = siblingNodes.indexOf(nodeInFocus);
+            let siblingNode;
+            if (indexOfNodeInFocus === (siblingNodes.length - 1)) {
+                siblingNode = siblingNodes[0];
+            } else {
+                siblingNode = siblingNodes[indexOfNodeInFocus + 1];
+            }
+            setNodeInFocus(siblingNode);
+            network.selectNodes([siblingNode.id]);
+        }
+    })
 
 
     const getWebPage = (url) => {
@@ -35,7 +105,7 @@ function App() {
         // scale up event click coordinates to match original size of screenshot
         const clickX = (e.pageX - screenshotRect.left) * (webPage.viewportWidth / screenshotRect.width);
         const clickY = (e.pageY - screenshotRect.top) * (webPage.viewportHeight / screenshotRect.height);
-        if (webPage){
+        if (webPage) {
             // find visible node at point that was clicked
             const nodesAtPoint = webPage.graph.nodes.filter(
                 node => {
@@ -46,16 +116,16 @@ function App() {
                         && (clickY < node.coordinates.bottom)
                 }
             )
-           const nodeAtPoint = nodesAtPoint.pop();
-           setNodeInFocus(nodeAtPoint);
-           network.selectNodes([nodeAtPoint.id]);
-           network.focus(nodeAtPoint.id);
+            const nodeAtPoint = nodesAtPoint.pop();
+            setNodeInFocus(nodeAtPoint);
+            network.selectNodes([nodeAtPoint.id]);
+            network.focus(nodeAtPoint.id);
         }
     }
 
     const handleNodeSelection = (e) => {
         // Handles selection of new node on vis.js graph
-        const  { nodes } = e;
+        const {nodes} = e;
         const nodeId = nodes[0];
         const node = webPage.graph.nodes[nodeId];
         setNodeInFocus(node);
@@ -91,11 +161,15 @@ function App() {
                             </Grid>
                         </Grid>
                     )
-                    : (
+                    : loading
+                    ? (
                         <Grid>
-                            <CircularProgress/>
+                            <div style={{display: "flex", justifyContent: "center", width: "100vw"}}>
+                                <CircularProgress/>
+                            </div>
                         </Grid>
                     )
+                    : null
             }
 
 
