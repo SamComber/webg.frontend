@@ -1,5 +1,3 @@
-
-
 /**
  * getNewNode
  * Returns new node given the current node and the arrow key that has been pressed.
@@ -10,7 +8,6 @@
  */
 const getNewNode = (key, currentNode, nodes, network) => {
     let siblingsNodes;
-    console.log(key);
     switch (key) {
         case "ArrowUp":
             return getParentNode(currentNode, nodes, network)
@@ -24,6 +21,7 @@ const getNewNode = (key, currentNode, nodes, network) => {
             siblingsNodes = getSiblingNodes(currentNode, nodes, network);
             return getNextSibling(currentNode, siblingsNodes)
         default:
+            // do nothing
     }
 }
 

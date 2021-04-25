@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 import VisJSGraph from 'vis-react';
 
@@ -11,7 +11,9 @@ const Graph = ({graph, handleNodeSelection, setNetwork}) => {
         edges: {
             color: '#000000'
         },
-        interaction: {hoverEdges: true},
+        interaction: {
+            hoverEdges: true
+        },
         physics: {
             enabled: false
         }
