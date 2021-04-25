@@ -63,6 +63,4 @@ const getNextSibling = (node, siblingNodes) => {
     }
 }
 
-
-
 export default traverseToNewNode;

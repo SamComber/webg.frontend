@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 /**
  * useKeyPress
+ * Adds event listener to call handler function whenever one
+ * of the specified keys is pressed.
  * @param {Array.<string>} keys - the keys to respond to.
  * @param {function} handler - the function to call on key press.
  */
