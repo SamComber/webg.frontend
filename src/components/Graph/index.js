@@ -11,7 +11,10 @@ const Graph = ({graph, handleNodeSelection, setNetwork}) => {
         edges: {
             color: '#000000'
         },
-        interaction: {hoverEdges: true}
+        interaction: {hoverEdges: true},
+        physics: {
+            enabled: false
+        }
     };
 
     const events = {
