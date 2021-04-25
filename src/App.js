@@ -12,16 +12,19 @@ function App() {
 
     const [webPage, setWebPage] = useState();
     const [nodeInFocus, setNodeInFocus] = useState();
+    const [loading, setLoading] = useState(false);
 
 
     const getWebPage = (url) => {
         // Fetches web page data from backend API
+        setLoading(true);
         setWebPage(undefined);
         axios.get("webPage", {params: {url}})
             .then((response) => {
                 setWebPage(response.data);
             })
             .catch(error => alert(error.message))
+            .finally(() => setLoading(false))
     }
 
     const handleScreenshotClick = (e) => {
