@@ -8,7 +8,8 @@ import URLInput from "./components/URLInput"
 import Graph from "./components/Graph";
 import Screenshot from "./components/Screenshot";
 import useKeyPress from "./hooks/useKeyPress"
-import getNewNode from "./utils/graph/traversal"
+import traverseToNewNode from "./utils/graph/traversal";
+import getNodeAtPoint from "./utils/graph/node_at_point";
 
 function App() {
 
@@ -35,20 +36,11 @@ function App() {
         // Handles selection of new node via click on screenshot
         let screenshotRect = e.currentTarget.getBoundingClientRect();
         // scale up event click coordinates to match original size of screenshot
-        const clickX = (e.pageX - screenshotRect.left) * (webPage.viewportWidth / screenshotRect.width);
-        const clickY = (e.pageY - screenshotRect.top) * (webPage.viewportHeight / screenshotRect.height);
+        const x = (e.pageX - screenshotRect.left) * (webPage.viewportWidth / screenshotRect.width);
+        const y = (e.pageY - screenshotRect.top) * (webPage.viewportHeight / screenshotRect.height);
         if (webPage) {
             // find visible node at point that was clicked
-            const nodesAtPoint = webPage.graph.nodes.filter(
-                node => {
-                    return (node.isVisible)
-                        && (node.coordinates.left < clickX)
-                        && (clickX < node.coordinates.right)
-                        && (node.coordinates.top < clickY)
-                        && (clickY < node.coordinates.bottom)
-                }
-            )
-            const nodeAtPoint = nodesAtPoint.pop();
+            const nodeAtPoint = getNodeAtPoint({ x , y}, webPage.graph.nodes);
             setNodeInFocus(nodeAtPoint);
             network.selectNodes([nodeAtPoint.id]);
             const scale = network.getScale() < 0.25 ? 1 : network.getScale();  // zoom in only if user is very zoomed out
@@ -67,7 +59,7 @@ function App() {
     useKeyPress(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"], (key) => {
         // Traverse graph with arrow keys
         if (network && nodeInFocus) {
-            const newNode = getNewNode(key, nodeInFocus, webPage.graph.nodes, network);
+            const newNode = traverseToNewNode(key, nodeInFocus, webPage.graph.nodes, network);
             if (newNode) {
                 setNodeInFocus(newNode);
                 network.selectNodes([newNode.id]);

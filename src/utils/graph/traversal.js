@@ -1,12 +1,12 @@
 /**
  * getNewNode
  * Returns new node given the current node and the arrow key that has been pressed.
- * @param {string} key - the name of the key to respond to, compared against event.key
+ * @param {string} key - the key that has been pressed
  * @param {object} currentNode - current node in focus
- * @param {Array.object} nodes - all nodes
+ * @param {{isVisible: boolean, coordinates: Object}[]} nodes - all nodes
  * @param {object} network - vis-react Network object
  */
-const getNewNode = (key, currentNode, nodes, network) => {
+const traverseToNewNode = (key, currentNode, nodes, network) => {
     let siblingsNodes;
     switch (key) {
         case "ArrowUp":
@@ -65,4 +65,4 @@ const getNextSibling = (node, siblingNodes) => {
 
 
 
-export default getNewNode;
+export default traverseToNewNode;
