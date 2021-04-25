@@ -119,7 +119,9 @@ function App() {
             const nodeAtPoint = nodesAtPoint.pop();
             setNodeInFocus(nodeAtPoint);
             network.selectNodes([nodeAtPoint.id]);
-            network.focus(nodeAtPoint.id);
+            console.log(network.getScale());
+            const scale = network.getScale() < 0.25 ? 1 : network.getScale();  // zoom in only if user is very zoomed out
+            network.focus(nodeAtPoint.id, {scale: scale});
         }
     }
 
