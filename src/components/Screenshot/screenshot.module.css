@@ -1,0 +1,18 @@
+.screenshotDiv {
+    overflow-y: auto;
+    position: relative;
+    height: 95vh;
+}
+
+.screenshotImg {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    pointer-events: all;
+}
+
+.screenshotCanvas {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+}
