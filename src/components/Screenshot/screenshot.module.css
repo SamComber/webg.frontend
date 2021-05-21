@@ -1,5 +1,5 @@
 .screenshotDiv {
-    overflow-y: hidden;
+    overflow-y: auto;
     position: relative;
     height: 95vh;
 }
