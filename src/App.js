@@ -23,7 +23,7 @@ function App() {
         setWebPage(undefined);
         setNodeInFocus(undefined);
         setNetwork(undefined);
-        axios.get("webPage", {params: {url}})
+        axios.post("/pages/", { url })
             .then((response) => {
                 setWebPage(response.data);
             })
