@@ -1,9 +1,7 @@
 import React, { useRef } from 'react';
 
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
+import { Paper, InputBase, IconButton } from '@mui/material';
+import { Search } from '@mui/icons-material';
 
 import styles from "./search_bar.module.css"
 
@@ -20,7 +18,7 @@ const SearchBar = ({ getWebPage }) => {
                 inputRef={inputElement}
             />
             <IconButton className={styles.searchBarIcon} onClick={() => getWebPage(inputElement.current.value)}>
-                <SearchIcon/>
+                <Search/>
             </IconButton>
         </Paper>
     );

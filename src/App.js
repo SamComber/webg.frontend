@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Grid from "@material-ui/core/Grid";
+import { Grid } from '@mui/material';
 
 import axios from "./axiosInstance";
 import SearchBar from "./components/SearchBar"
@@ -23,8 +23,9 @@ function App() {
         setWebPage(undefined);
         setNodeInFocus(undefined);
         setNetwork(undefined);
-        axios.post("/pages/", { url })
-            .then((response) => {
+        axios.get("/webPage", { 
+            params: { url: url } 
+          }).then((response) => {
                 setWebPage(response.data);
             })
             .catch(error => alert(error.message))
